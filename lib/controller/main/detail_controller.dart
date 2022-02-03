@@ -1,20 +1,60 @@
-import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart';
+
 import 'package:testnew/base/base_controller.dart';
-import 'package:testnew/core/constants/constants.dart';
-import 'package:testnew/data/data_source/local_source.dart';
-import 'package:testnew/data/models/banners/banners_response.dart';
-import 'package:testnew/data/models/categories/category_response.dart';
-import 'package:testnew/data/models/orders/orders_response.dart';
-import 'package:testnew/data/models/products/products_response.dart';
+import 'package:testnew/data/models/photos_response.dart';
+import 'package:testnew/data/models/posts_response.dart';
 import 'package:testnew/data/repository/home/home_repository.dart';
 import 'package:get/get.dart';
 
-class DetailController extends BaseController with SingleGetTickerProviderMixin {
+class DetailController extends BaseController {
+
+
+  HomeRepository repository;
+  List<Photos>? _myPhotos;
+  List<Posts>? _myPosts;
+
+
+
+
+
+
+  DetailController({
+    required this.repository,
+  }) : assert(repository != null);
 
   @override
   void onInit() {
     super.onInit();
   }
+
+  void getMyPhotos(int id) async {
+    final result = await repository.getPhotos(id: id);
+    if (result is List<Photos>) {
+      print('keldi');
+      _myPhotos = result;
+      update();
+    } else {
+      print('keldmadi');
+      Get.snackbar('error'.tr, result.toString());
+    }
+  }
+
+
+  void getMyPosts(int id) async {
+    final result = await repository.getPhotos(id: id);
+    if (result is List<Posts>) {
+      print('keldi');
+      _myPosts = result;
+      update();
+    } else {
+      print('keldmadi');
+      Get.snackbar('error'.tr, result.toString());
+    }
+  }
+
+
+
+
+  List<Photos>? get myPhotos => _myPhotos;
+  List<Posts>? get myPosts => _myPosts;
 
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:testnew/controller/main/home/home_controller.dart';
 import 'package:testnew/core/custom_widgets/custom_button/custom_button.dart';
 import 'package:testnew/core/theme/app_colors.dart';
 import 'package:testnew/core/theme/app_text_style.dart';
+import 'package:testnew/data/models/user_response.dart';
 import 'package:testnew/ui/main/home/widgets/button_widget.dart';
 
 class DetailPage extends GetView<DetailController> {
@@ -15,11 +17,12 @@ class DetailPage extends GetView<DetailController> {
 
   @override
   Widget build(BuildContext context) {
+    Map data = Get.arguments is Map ? Get.arguments : {};
     return Scaffold(
       backgroundColor: AppColors.blue50.withOpacity(0.99),
       appBar: AppBar(
         backgroundColor: AppColors.blue50.withOpacity(0.99),
-        title: Text('UserName'),
+        title: Text(data['username']),
         centerTitle: true,
         titleTextStyle: AppTextStyles.appBarTitle,
       ),
@@ -34,7 +37,7 @@ class DetailPage extends GetView<DetailController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('Name'),
+                      Text(data['name']),
                       SizedBox(width: 20),
                       Container(
                         width: 100,
@@ -60,7 +63,6 @@ class DetailPage extends GetView<DetailController> {
                   ),
                 ),
                 Container(
-                  height: size.height,
                   decoration: BoxDecoration(
                       color: Colors.orange.shade50,
                       borderRadius: BorderRadius.only(
@@ -108,7 +110,7 @@ class DetailPage extends GetView<DetailController> {
                                   ]),
                               child: Image.asset('assets/png/gmail.png')),
                           SizedBox(width: 10),
-                          Text('Sherwood@rosamond.me'),
+                          Text(data['email']),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -137,7 +139,7 @@ class DetailPage extends GetView<DetailController> {
                                   ]),
                               child: Image.asset('assets/png/call.png')),
                           SizedBox(width: 10),
-                          Text('024-648-3804'),
+                          Text(data['phone']),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -166,7 +168,7 @@ class DetailPage extends GetView<DetailController> {
                                   ]),
                               child: Image.asset('assets/png/web.png')),
                           SizedBox(width: 10),
-                          Text('conrad.com'),
+                          Text(data['web']),
                         ],
                       ),
                       SizedBox(height: 5),
@@ -211,7 +213,7 @@ class DetailPage extends GetView<DetailController> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          Text('Hoeger LLC'),
+                          Text(data['company1']),
                         ],
                       ),
                       SizedBox(height: 2),
@@ -227,7 +229,7 @@ class DetailPage extends GetView<DetailController> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          Text('Centralized empowering task-force'),
+                          Text(data['company2']),
                         ],
                       ),
                       SizedBox(height: 2),
@@ -243,36 +245,12 @@ class DetailPage extends GetView<DetailController> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          Text('target end-to-end models'),
+                          Text(data['company3']),
                         ],
                       ),
                       SizedBox(height: 60),
                       CustomButton(
                         width: 120,
-                        color: Colors.transparent,
-                        onTap: () {},
-                        child: Text('See all posts', style: AppTextStyles.appBarTitle,),
-                      ),
-                      Container(
-                        height: 150,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int index) =>
-                              Card(
-                            child: Container(
-                              width: 150,
-                              child: Center(
-                                child: Text('Card'),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      CustomButton(
-                        width: 130,
                         color: Colors.transparent,
                         onTap: () {},
                         child: Text('See all albums', style: AppTextStyles.appBarTitle,),
@@ -282,17 +260,41 @@ class DetailPage extends GetView<DetailController> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: 10,
+                          itemCount: controller.myPhotos?.length,
                           itemBuilder: (BuildContext context, int index) =>
                               Card(
-                            child: Container(
-                              width: 150,
-                              child: Center(
-                                child: Text('Card'),
-                              ),
-                            ),
+                                child: Container(
+                                  width: 150,
+                                  child: Center(
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller.myPhotos?[index].url ?? '',
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
                           ),
                         ),
+                      ),
+                      SizedBox(height: 20),
+                      CustomButton(
+                        width: 130,
+                        color: Colors.transparent,
+                        onTap: () {},
+                        child: Text('See all posts', style: AppTextStyles.appBarTitle,),
+                      ),
+                      ListView.builder(
+                        itemCount: controller.myPosts?.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return CellUserWidget(
+                            onPressed: () {},
+                            text: controller.myPosts?[index].title,
+                            surName: controller.myPosts?[index].body,
+                          );
+                        },
                       ),
                     ],
                   ),

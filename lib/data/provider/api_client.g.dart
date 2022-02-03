@@ -111,18 +111,55 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<MyUsers> getMyUsers() async {
+  Future<List<MyUsers>> getMyUsers() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MyUsers>(
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<MyUsers>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'users',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = MyUsers.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => MyUsers.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<Photos>> getMyPhotos(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'albumId': id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<Photos>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'photos',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Photos.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<Posts>> getMyPosts(userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'userId': userId};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Posts>>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'posts',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Posts.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

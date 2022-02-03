@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:testnew/core/theme/app_colors.dart';
 import 'package:testnew/core/theme/app_text_style.dart';
@@ -56,19 +58,31 @@ class CellUserWidget extends StatelessWidget {
                 blurRadius: 20,
               ),
             ]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
           children: [
-            Text(
-              text ?? '',
-              style: AppTextStyles.appBarTitle.copyWith(
-                  color: AppColors.mainColor2,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text ?? '',
+                  style: AppTextStyles.appBarTitle.copyWith(
+                      color: AppColors.mainColor2,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  surName ?? '',
+                  style: AppTextStyles.appBarTitle.copyWith(
+                      color: AppColors.mainColor2,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+
+              ],
             ),
             Text(
-              surName ?? '',
+              '${Random().nextInt(1000)}',
               style: AppTextStyles.appBarTitle.copyWith(
                   color: AppColors.mainColor2,
                   fontSize: 18,

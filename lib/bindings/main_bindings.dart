@@ -11,12 +11,17 @@ class MainBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => SplashController());
     Get.lazyPut(() => MainController(), fenix: true);
-    Get.lazyPut(() => DetailController());
+    // Get.lazyPut(() => DetailController());
     Get.lazyPut<HomeController>(
       () => HomeController(
         repository: HomeRepository(apiClient: ApiClient.getInstance()),
       ),
       fenix: true,
+    );
+    Get.lazyPut<DetailController>(
+          () => DetailController(
+        repository: HomeRepository(apiClient: ApiClient.getInstance()),
+      ),
     );
   }
 }

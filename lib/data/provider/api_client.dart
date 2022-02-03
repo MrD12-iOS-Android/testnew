@@ -6,6 +6,8 @@ import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:testnew/data/models/banners/banners_response.dart';
 import 'package:testnew/data/models/categories/category_response.dart';
+import 'package:testnew/data/models/photos_response.dart';
+import 'package:testnew/data/models/posts_response.dart';
 import 'package:testnew/data/models/products/products_response.dart';
 import 'package:testnew/data/models/token/refresh_token_request.dart';
 import 'package:testnew/data/models/token/refresh_token_response.dart';
@@ -98,7 +100,16 @@ abstract class ApiClient {
   );
 
   @GET('users')
-  Future<MyUsers> getMyUsers();
+  Future<List<MyUsers>> getMyUsers();
+
+  @GET('photos')
+  Future<List<Photos>> getMyPhotos(
+      @Query('albumId') int id,
+      );
+  @GET('posts')
+  Future<List<Posts>> getMyPosts(
+      @Query('userId') int userId,
+      );
 
 
 

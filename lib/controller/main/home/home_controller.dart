@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart';
 import 'package:testnew/base/base_controller.dart';
 import 'package:testnew/data/data_source/local_source.dart';
 import 'package:testnew/data/models/user_response.dart';
@@ -14,9 +13,7 @@ class HomeController extends BaseController {
     required this.repository,
   }) : assert(repository != null);
 
-  List<MyUsers>? _myUsers = [];
-
-
+  List<MyUsers> _myUsers = [];
 
   @override
   void onInit() {
@@ -26,12 +23,15 @@ class HomeController extends BaseController {
 
   void getMyUsers() async {
     final result = await repository.getUser();
-    if (result is MyUsers) {
-      _myUsers = myUsersFromMap(result.name ?? '');
+    if (result is List<MyUsers>) {
+      print('keldi');
+      _myUsers = result;
       update();
     } else {
+      print('keldmadi');
       Get.snackbar('error'.tr, result.toString());
     }
   }
-  List<MyUsers>? get myUsers => _myUsers;
+
+  List<MyUsers> get myUsers => _myUsers;
 }
