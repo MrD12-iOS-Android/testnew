@@ -3,6 +3,7 @@ import 'package:testnew/base/base_repository.dart';
 import 'package:testnew/data/models/banners/banners_response.dart';
 import 'package:testnew/data/models/categories/category_response.dart';
 import 'package:testnew/data/models/products/products_response.dart';
+import 'package:testnew/data/models/user_response.dart';
 import 'package:testnew/data/provider/api_client.dart';
 import 'package:testnew/data/provider/response_handler.dart';
 import 'package:testnew/data/provider/server_error.dart';
@@ -12,31 +13,6 @@ class HomeRepository extends BaseRepository {
 
   HomeRepository({required this.apiClient}) : assert(apiClient != null);
 
-  Future<ResponseHandler<BannersResponse>> _fetchBanners(
-      {required String shipperId,
-      required int page,
-      required int limit}) async {
-    BannersResponse response;
-    try {
-      response = await apiClient!.getBanners(shipperId, page, limit);
-    } catch (error, stacktrace) {
-      print("Exception occurred: $error stacktrace: $stacktrace");
-      return ResponseHandler()
-        ..setException(ServerError.withError(error: error as DioError));
-    }
-    return ResponseHandler()..data = response;
-  }
-
-  Future<dynamic> getBanners({required String shipperId}) async {
-    final response =
-        await _fetchBanners(shipperId: shipperId, limit: 100, page: 1);
-    if (response.data != null) {
-      return response.data;
-    } else if (response.getException()?.getErrorMessage() != "Canceled") {
-      return await getErrorMessage(
-          response.getException()?.getErrorMessage() ?? '');
-    }
-  }
 
   Future<ResponseHandler<CategoryResponse?>> _fetchCategoryWithProducts(
       {required String shipperId, int page = 1, int limit = 1000}) async {
@@ -63,14 +39,12 @@ class HomeRepository extends BaseRepository {
     }
   }
 
-  Future<ResponseHandler<ProductsResponse>> _fetchSearchProducts(
-      {required String shipperId,
-      required String search,
-      int page = 1,
-      int limit = 1000}) async {
-    ProductsResponse response;
+
+
+  Future<ResponseHandler<MyUsers>> fetchMyUsers() async {
+    MyUsers response;
     try {
-      response = await apiClient!.getProducts(shipperId, search, page, limit);
+      response = await apiClient!.getMyUsers();
     } catch (error, stacktrace) {
       print("Exception occurred: $error stacktrace: $stacktrace");
       return ResponseHandler()
@@ -79,13 +53,9 @@ class HomeRepository extends BaseRepository {
     return ResponseHandler()..data = response;
   }
 
-  Future<dynamic> getSearchProducts(
-      {required String shipperId,
-      required String search,
-      int limit = 1000,
-      int page = 1}) async {
-    final response = await _fetchSearchProducts(
-        shipperId: shipperId, search: search, limit: limit, page: page);
+
+  Future<dynamic> getUser() async {
+    final response = await fetchMyUsers();
     if (response.data != null) {
       return response.data;
     } else if (response.getException()?.getErrorMessage() != "Canceled") {
@@ -94,4 +64,5 @@ class HomeRepository extends BaseRepository {
       );
     }
   }
+
 }

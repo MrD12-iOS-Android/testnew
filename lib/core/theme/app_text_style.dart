@@ -193,7 +193,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
   static const profileBranchesItemText = TextStyle(
-    color: AppColors.black16,
+    color: AppColors.black1,
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );

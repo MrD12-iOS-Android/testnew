@@ -32,7 +32,7 @@ class AppColors {
   static const color1 = Color(0xff1A1A1A);
   static const black05 = Color.fromRGBO(0, 0, 0, 0.05);
   static const black86 = Color(0xff868686);
-  static const black16 = Color(0xff161616);
+  static const blue50 = Color(0xffCCE0FF);
   static const myOrdersTabBackground = Color(0xffEFEFF4);
   static const lightTestGrey = Color(0xffEBEDF0);
   static const chooseReasonComment = Color(0xffF2F2F2);

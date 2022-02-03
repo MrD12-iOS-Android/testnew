@@ -9,6 +9,7 @@ import 'package:testnew/data/models/categories/category_response.dart';
 import 'package:testnew/data/models/products/products_response.dart';
 import 'package:testnew/data/models/token/refresh_token_request.dart';
 import 'package:testnew/data/models/token/refresh_token_response.dart';
+import 'package:testnew/data/models/user_response.dart';
 
 part 'api_client.g.dart';
 
@@ -95,4 +96,10 @@ abstract class ApiClient {
   Future<RefreshTokenResponse> refreshToken(
     @Body() RefreshTokenRequest request,
   );
+
+  @GET('users')
+  Future<MyUsers> getMyUsers();
+
+
+
 }

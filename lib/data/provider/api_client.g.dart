@@ -8,7 +8,7 @@ part of 'api_client.dart';
 
 class _ApiClient implements ApiClient {
   _ApiClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://customer.api.delever.uz/v1/';
+    baseUrl ??= 'https://jsonplaceholder.typicode.com/';
   }
 
   final Dio _dio;
@@ -19,15 +19,15 @@ class _ApiClient implements ApiClient {
   Future<BannersResponse> getBanners(shipperId, page, limit) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
+    final _headers = <String, dynamic>{r'Shipper': shipperId};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<BannersResponse>(Options(
-                method: 'GET',
-                headers: <String, dynamic>{r'Shipper': shipperId},
-                extra: _extra)
-            .compose(_dio.options, 'banner',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<BannersResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'banner',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BannersResponse.fromJson(_result.data!);
     return value;
   }
@@ -42,15 +42,15 @@ class _ApiClient implements ApiClient {
       r'with_products': withProducts,
       r'all': all
     };
+    final _headers = <String, dynamic>{r'Shipper': shipperId};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CategoryResponse>(Options(
-                method: 'GET',
-                headers: <String, dynamic>{r'Shipper': shipperId},
-                extra: _extra)
-            .compose(_dio.options, 'category',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<CategoryResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'category',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CategoryResponse.fromJson(_result.data!);
     return value;
   }
@@ -59,15 +59,15 @@ class _ApiClient implements ApiClient {
   Future<Products> getProductDetail(shipperId, productId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Shipper': shipperId};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Products>(Options(
-                method: 'GET',
-                headers: <String, dynamic>{r'Shipper': shipperId},
-                extra: _extra)
-            .compose(_dio.options, 'product/$productId',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<Products>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'product/${productId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Products.fromJson(_result.data!);
     return value;
   }
@@ -80,15 +80,15 @@ class _ApiClient implements ApiClient {
       r'page': page,
       r'limit': limit
     };
+    final _headers = <String, dynamic>{r'Shipper': shipperId};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ProductsResponse>(Options(
-                method: 'GET',
-                headers: <String, dynamic>{r'Shipper': shipperId},
-                extra: _extra)
-            .compose(_dio.options, 'product',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ProductsResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'product',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ProductsResponse.fromJson(_result.data!);
     return value;
   }
@@ -97,15 +97,32 @@ class _ApiClient implements ApiClient {
   Future<RefreshTokenResponse> refreshToken(request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<RefreshTokenResponse>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'customers/refresh-token',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RefreshTokenResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyUsers> getMyUsers() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyUsers>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'users',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyUsers.fromJson(_result.data!);
     return value;
   }
 

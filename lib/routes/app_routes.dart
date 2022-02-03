@@ -18,5 +18,6 @@ abstract class Routes {
   static const CURRENT_ORDERS_DETAIL = '/current_orders_detail';
   static const ADD_COMMENTS = '/add_comments';
   static const MAP = '/map';
+  static const DETAIL = '/detail';
   static const ADDRESS_DETAIL = '/address_detail';
 }

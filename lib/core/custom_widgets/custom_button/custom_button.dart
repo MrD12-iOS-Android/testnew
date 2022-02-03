@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final Function onTap;
   final Widget child;
   final double height;
+  final double width;
   final EdgeInsets margin;
   final EdgeInsets padding;
   final Color color;
@@ -20,7 +21,7 @@ class CustomButton extends StatelessWidget {
     this.borderRadius,
     this.color = AppColors.assets,
     this.alignment = Alignment.center,
-    this.padding = EdgeInsets.zero,
+    this.padding = EdgeInsets.zero, this.width = 100,
   }) : super(key: key);
 
   @override
@@ -44,6 +45,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Container(
           height: height,
+          width: width,
           padding: padding,
           alignment: alignment,
           child: child,
