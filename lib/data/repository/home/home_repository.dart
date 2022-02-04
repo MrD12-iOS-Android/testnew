@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:testnew/base/base_repository.dart';
 import 'package:testnew/data/models/banners/banners_response.dart';
 import 'package:testnew/data/models/categories/category_response.dart';
+import 'package:testnew/data/models/comment_response.dart';
 import 'package:testnew/data/models/photos_response.dart';
 import 'package:testnew/data/models/photos_response.dart';
 import 'package:testnew/data/models/posts_response.dart';
@@ -104,6 +105,31 @@ class HomeRepository extends BaseRepository {
 
 
 
+  Future<ResponseHandler<List<Comment>>> fetchMyComments({int id = 0}) async {
+    List<Comment> response;
+    try {
+      response = (await apiClient!.getMyComments(id));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stacktrace: $stacktrace");
+      return ResponseHandler()
+        ..setException(ServerError.withError(error: error as DioError));
+    }
+    return ResponseHandler()..data = response;
+  }
+  Future<dynamic> getComments({int id = 0}) async {
+    final response = await fetchMyComments(id: id);
+    if (response.data != null) {
+      return response.data;
+    } else if (response.getException()?.getErrorMessage() != "Canceled") {
+      return await getErrorMessage(
+        response.getException()?.getErrorMessage() ?? '',
+      );
+    }
+  }
+
+
+
+
 
 
 
@@ -124,7 +150,7 @@ class HomeRepository extends BaseRepository {
     return ResponseHandler()..data = response;
   }
   Future<dynamic> getPosts({int id = 0}) async {
-    final response = await fetchMyPhotos(id: id);
+    final response = await fetchMyPosts(id: id);
     if (response.data != null) {
       return response.data;
     } else if (response.getException()?.getErrorMessage() != "Canceled") {

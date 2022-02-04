@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:testnew/controller/main/comment_controller.dart';
 import 'package:testnew/controller/main/detail_controller.dart';
 import 'package:testnew/controller/main/home/home_controller.dart';
 import 'package:testnew/controller/main/main_controller.dart';
@@ -20,6 +21,11 @@ class MainBindings extends Bindings {
     );
     Get.lazyPut<DetailController>(
           () => DetailController(
+        repository: HomeRepository(apiClient: ApiClient.getInstance()),
+      ),
+    );
+    Get.lazyPut<CommentController>(
+          () => CommentController(
         repository: HomeRepository(apiClient: ApiClient.getInstance()),
       ),
     );

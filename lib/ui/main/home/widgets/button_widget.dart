@@ -7,12 +7,14 @@ import 'package:testnew/core/theme/app_text_style.dart';
 class CellUserWidget extends StatelessWidget {
   final String? text;
   final String? surName;
+  final bool imgShow;
   final Function()? onPressed;
 
   const CellUserWidget({
     this.text = '',
     this.surName = '',
     this.onPressed,
+    this.imgShow = false,
   });
 
   @override
@@ -59,35 +61,46 @@ class CellUserWidget extends StatelessWidget {
               ),
             ]),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text ?? '',
-                  style: AppTextStyles.appBarTitle.copyWith(
-                      color: AppColors.mainColor2,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  surName ?? '',
-                  style: AppTextStyles.appBarTitle.copyWith(
-                      color: AppColors.mainColor2,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text ?? '',
+                    maxLines: 1,
+                    style: AppTextStyles.appBarTitle.copyWith(
+                        color: AppColors.mainColor2,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    surName ?? '',
+                    maxLines: 1,
+                    style: AppTextStyles.appBarTitle.copyWith(
+                        color: AppColors.mainColor2,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
 
-              ],
+                ],
+              ),
             ),
-            Text(
+            imgShow ? Text(
               '${Random().nextInt(1000)}',
               style: AppTextStyles.appBarTitle.copyWith(
                   color: AppColors.mainColor2,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
-            ),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300),
+            ) : SizedBox(),
+            SizedBox(width: 3),
+            imgShow ? Image.asset(
+                'assets/png/like.png',
+                width: 20,
+                height: 20,
+            ) : SizedBox()
           ],
         ),
       ),

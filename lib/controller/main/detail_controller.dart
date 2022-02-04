@@ -27,7 +27,9 @@ class DetailController extends BaseController {
   }
 
   void getMyPhotos(int id) async {
+    setLoading(true);
     final result = await repository.getPhotos(id: id);
+    setLoading(false);
     if (result is List<Photos>) {
       print('keldi');
       _myPhotos = result;
@@ -40,7 +42,9 @@ class DetailController extends BaseController {
 
 
   void getMyPosts(int id) async {
-    final result = await repository.getPhotos(id: id);
+    setLoading(true);
+    final result = await repository.getPosts(id: id);
+    setLoading(false);
     if (result is List<Posts>) {
       print('keldi');
       _myPosts = result;

@@ -19,13 +19,22 @@ class HomeController extends BaseController {
   void onInit() {
     super.onInit();
     getMyUsers();
+
+
   }
 
   void getMyUsers() async {
+    setLoading(true);
     final result = await repository.getUser();
+    setLoading(false);
     if (result is List<MyUsers>) {
       print('keldi');
+
       _myUsers = result;
+      var i = MyUsers();
+      i.id = 22;
+      i.name = 'aaaaaa';
+      _myUsers.add(i);
       update();
     } else {
       print('keldmadi');
