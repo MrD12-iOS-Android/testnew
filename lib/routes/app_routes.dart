@@ -20,5 +20,6 @@ abstract class Routes {
   static const MAP = '/map';
   static const DETAIL = '/detail';
   static const COMMENT = '/comment';
+  static const SHOWPHOTO = '/show_photo';
   static const ADDRESS_DETAIL = '/address_detail';
 }

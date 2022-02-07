@@ -119,5 +119,12 @@ abstract class ApiClient {
   );
 
 
+  @POST('posts/{postId}/comments')
+  Future<Comment> setComments(
+      @Body() Comment request,
+      @Path('postId') int? postId,
+      );
+
+
 
 }

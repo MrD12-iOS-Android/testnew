@@ -12,6 +12,8 @@ import 'package:testnew/core/custom_widgets/custom_button/custom_button.dart';
 import 'package:testnew/core/custom_widgets/loading_widgets/modal_progress_hud.dart';
 import 'package:testnew/core/theme/app_colors.dart';
 import 'package:testnew/core/theme/app_text_style.dart';
+import 'package:testnew/data/data_source/local_source.dart';
+import 'package:testnew/data/models/comment_response.dart';
 import 'package:testnew/data/models/user_response.dart';
 import 'package:testnew/ui/main/comments/widgets/custom_circle_text_field.dart';
 import 'package:testnew/ui/main/detail/widgets/card_items_widget.dart';
@@ -22,6 +24,8 @@ class CommentPage extends GetView<CommentController> {
 
   @override
   Widget build(BuildContext context) {
+
+    LocalSource localSource = LocalSource.getInstance();
     Map data = Get.arguments is Map ? Get.arguments : {};
     return Scaffold(
       backgroundColor: AppColors.blue50.withOpacity(0.99),
@@ -32,6 +36,10 @@ class CommentPage extends GetView<CommentController> {
         titleTextStyle: AppTextStyles.appBarTitle,
       ),
       body: GetBuilder<CommentController>(
+        dispose: (a){
+          localSource.setComment(a.controller?.myComments ?? []);
+          print(localSource.getComment().length);
+        },
         builder: (controller) {
           final size = MediaQuery.of(context).size;
           return ModalProgressHUD(
@@ -142,14 +150,14 @@ class CommentPage extends GetView<CommentController> {
                       height: size.width + 200,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: const BouncingScrollPhysics().parent,
+                        physics: const BouncingScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) =>
                         CardItemsWidget(
-                          title:  controller.myComments?[index].name,
+                          title: controller.myComments?[index].name,
                           desc:  controller.myComments?[index].body,
-                          email:  controller.myComments?[index].email,
+                          email: controller.myComments?[index].email,
                         ),
-                        itemCount: controller.myComments?.length,
+                        itemCount: controller.myComments?.length
                       ),
                     ),
                   ],
@@ -178,43 +186,65 @@ void showQuickSettingsBottomSheet(
     isScrollControlled: true,
     builder: (context) => StatefulBuilder(
       builder: (context, state) {
-        return Container(
-          height: 600,
-          padding: const EdgeInsets.all(8.0),
-          width: double.infinity,
-          child: ListView(
-            children: [
-              SizedBox(height: 20),
-              Center(child: Text('Add Comment')),
-              SizedBox(height: 20),
-              const CustomCircleTextField(
-                hintText: "Email",
-                enabledTitle: true,
-                titleField: 'Write email',
+        TextEditingController editingController1 = TextEditingController();
+        TextEditingController editingController2 = TextEditingController();
+        TextEditingController editingController3 = TextEditingController();
+        LocalSource localSource = LocalSource.getInstance();
+        return GetBuilder<CommentController>(
+          builder: (controller) {
+            return Container(
+              height: 600,
+              padding: const EdgeInsets.all(8.0),
+              width: double.infinity,
+              child: ListView(
+                children: [
+                  SizedBox(height: 20),
+                  Center(child: Text('Add Comment')),
+                  SizedBox(height: 20),
+                  CustomCircleTextField(
+                    hintText: "Write a email",
+                    enabledTitle: true,
+                    controller: editingController1,
+                    titleField: 'Email',
+                  ),
+                  SizedBox(height: 20),
+                  CustomCircleTextField(
+                    hintText: "Write a name",
+                    enabledTitle: true,
+                    titleField: 'Name',
+                    controller: editingController2,
+                  ),
+                  const SizedBox(height: 24),
+                  CustomCircleTextField(
+                    enabledTitle: true,
+                    titleField: 'Comment',
+                    maxLines: 5,
+                    controller: editingController3,
+                    hintText: "Write a comment",
+                  ),
+                  CustomButton(
+                    onTap: (){
+                      notifier.myComments?.add(Comment(
+                        id: controller.myComments?[0].id,
+                        name: editingController2.text,
+                        body: editingController3.text,
+                        email: editingController1.text,
+                        postId: controller.myComments?[0].postId,
+                      ));
+                      localSource.setComment(controller.myComments ?? []);
+
+                      // localSource.getComment().removeLast();
+                      notifier.update();
+                      Get.back();
+                    },
+                    margin: EdgeInsets.all(20),
+                    child: Text('Send'),
+                    color: AppColors.green,
+                  )
+                ],
               ),
-              SizedBox(height: 20),
-              const CustomCircleTextField(
-                hintText: "Name",
-                enabledTitle: true,
-                titleField: 'Write name',
-              ),
-              const SizedBox(height: 24),
-              const CustomCircleTextField(
-                enabledTitle: true,
-                titleField: 'Comment',
-                maxLines: 5,
-                hintText: "Write comment",
-              ),
-              CustomButton(
-                onTap: (){
-                  Get.back();
-                },
-                margin: EdgeInsets.all(20),
-                child: Text('Send'),
-                color: AppColors.green,
-              )
-            ],
-          ),
+            );
+          }
         );
       },
     ),

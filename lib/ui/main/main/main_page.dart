@@ -20,34 +20,37 @@ class MainPage extends GetView<MainController> {
             const HomePage(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          unselectedItemColor: AppColors.unselectedBottomNavItem,
-          selectedItemColor: AppColors.assets,
-          onTap: (pos) => controller.setMenu(BottomMenu.values[pos]),
-          currentIndex: controller.bottomMenu.index,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-          ),
-          elevation: 8,
-          items: [
-            _bottomNavigationBarItem(
-              icon: 'ic_home',
-              label: 'home'.tr,
-              activeIcon: 'ic_active_home',
+        bottomNavigationBar: Visibility(
+          visible: false,
+          child: BottomNavigationBar(
+            unselectedItemColor: AppColors.unselectedBottomNavItem,
+            selectedItemColor: AppColors.assets,
+            onTap: (pos) => controller.setMenu(BottomMenu.values[pos]),
+            currentIndex: controller.bottomMenu.index,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
             ),
-            _bottomNavigationBarItem(
-              icon: 'ic_profile',
-              label: 'profile'.tr,
-              activeIcon: 'ic_active_profile',
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
             ),
-          ],
+            elevation: 8,
+            items: [
+              _bottomNavigationBarItem(
+                icon: 'ic_home',
+                label: 'home'.tr,
+                activeIcon: 'ic_active_home',
+              ),
+              _bottomNavigationBarItem(
+                icon: 'ic_profile',
+                label: 'profile'.tr,
+                activeIcon: 'ic_active_profile',
+              ),
+            ],
+          ),
         ),
       ),
     );

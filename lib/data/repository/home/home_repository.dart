@@ -130,7 +130,29 @@ class HomeRepository extends BaseRepository {
 
 
 
-
+  Future<ResponseHandler<Comment>> fetchCollecting({
+     Comment? request,
+    required int id,
+  }) async {
+    Comment response;
+    try {
+      response = await apiClient!.setComments(request!,id);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stacktrace: $stacktrace");
+      return ResponseHandler()
+        ..setException(ServerError.withError(error: error as DioError));
+    }
+    return ResponseHandler()..data = response;
+  }
+  Future<dynamic> setCollecting({Comment? request, required int id}) async {
+    final response =
+    await fetchCollecting(request: request, id: 1);
+    if (response.data != null) {
+      return response.data;
+    } else if (response.getException()!.getErrorMessage() != "Canceled") {
+      return await getErrorMessage(response.getException()!.getErrorMessage());
+    }
+  }
 
 
 

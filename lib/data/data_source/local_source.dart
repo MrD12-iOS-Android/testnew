@@ -3,6 +3,7 @@ import 'package:testnew/data/floor/app_database.dart';
 import 'package:testnew/data/floor/dao/product_dao.dart';
 import 'package:testnew/data/floor/entity/products.dart';
 import 'package:testnew/data/keys/app_keys.dart';
+import 'package:testnew/data/models/comment_response.dart';
 import 'package:testnew/data/models/customer/customer.dart';
 
 class LocalSource {
@@ -23,6 +24,17 @@ class LocalSource {
   Stream<List<Products>> getAllBasketProducts() {
     return _productDao.getBasketProducts();
   }
+  Future<List<Products>> getAllBasketProductsAsync() {
+    return _productDao.getBasketProductsAsync();
+  }
+
+  //
+  // Stream<List<Comment>> getAllBasketComments() {
+  //   return _productDao.getBasketComments();
+  // }
+  // Future<List<Comment>> getAllBasketCommentsAsync() {
+  //   return _productDao.getBasketCommentsAsync();
+  // }
 
   Future<void> updateQuantity(
       {bool isMinus = false,
@@ -41,9 +53,8 @@ class LocalSource {
     }
   }
 
-  Future<List<Products>> getAllBasketProductsAsync() {
-    return _productDao.getBasketProductsAsync();
-  }
+
+
 
   Future<void> removeProfile() async {
     await _localStorage.remove(AppKeys.HAS_PROFILE);
@@ -83,6 +94,13 @@ class LocalSource {
     await _localStorage.write(AppKeys.DATE_OF_BIRTH, customer.dateOfBirth);
     await _localStorage.write(AppKeys.ACCESS_TOKEN, customer.accessToken);
     await _localStorage.write(AppKeys.REFRESH_TOKEN, customer.refreshToken);
+  }
+  Future<void> setComment(List<Comment> comment) async {
+    await _localStorage.write('id', comment);
+  }
+
+  List<Comment> getComment() {
+    return _localStorage.read<List<Comment>>('id') ?? [];
   }
 
   String getAccessToken() {
